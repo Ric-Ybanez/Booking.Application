@@ -1,0 +1,32 @@
+<div fxLayout="column">
+  <div fxFlex class="profile-header">UPDATE AIRPORT</div>
+  <form (ngSubmit)="onSubmit(form)" [formGroup]="form">
+
+    <div fxLayout="column">
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Name" maxlength="100" formControlName="name">
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Description" maxlength="200" formControlName="description">
+      </mat-form-field>
+      <mat-form-field fxFlex="31">
+        <mat-label>Available</mat-label>
+        <mat-select formControlName="isAvailable">
+          <mat-option [value]="true">Yes</mat-option>
+          <mat-option [value]="false">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <div mat-dialog-actions fxLayoutAlign="end">
+        <button class="mat-raised-button btn-primary" type="submit">Save</button>
+        <button class="mat-raised-button mat-warn" (click)="close()" type="button" tabindex="-1">Cancel</button>
+      </div>
+      <mat-dialog-content>
+        <div style="text-align: center;color: red; font-size: 20px;">
+          {{errorMessage}}
+        </div>
+      </mat-dialog-content>
+    </div>
+  </form>
+</div>
+

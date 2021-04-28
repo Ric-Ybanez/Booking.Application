@@ -1,0 +1,68 @@
+<div fxLayout="column">
+  <div fxFlex class="profile-header">CREATE TUTOR</div>
+  <form (ngSubmit)="onSubmit(form)" [formGroup]="form">
+
+    <div fxLayout="column">
+      <mat-form-field fxFlex>
+        <input matInput required placeholder="Username" maxlength="100" formControlName="username">
+      </mat-form-field>
+      <mat-form-field required fxFlex>
+        <input type="password" matInput placeholder="Password" maxlength="100" formControlName="password">
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <input matInput required placeholder="First Name" maxlength="100" formControlName="firstName">
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Middle Name" maxlength="100" formControlName="middleName">
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <input matInput required placeholder="Last Name" maxlength="100" formControlName="lastName">
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <input matInput required placeholder="Contact No." maxlength="20" formControlName="contactNo">
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <input matInput required placeholder="Email" maxlength="20" formControlName="email">
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <mat-label>Gender</mat-label>
+        <mat-select formControlName="gender" required>
+          <mat-option value="M">Male</mat-option>
+          <mat-option value="F">Female</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="birthDate" placeholder="Birthdate" formControlName="dateOfBirth"
+               required>
+        <mat-datepicker-toggle matSuffix [for]="birthDate"></mat-datepicker-toggle>
+        <mat-datepicker #birthDate></mat-datepicker>
+        <mat-error>Birthdate is required</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="fromDate" placeholder="Available Date From" formControlName="availableDateFrom"
+               required>
+        <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+        <mat-datepicker #fromDate></mat-datepicker>
+        <mat-error>Date is required</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [matDatepicker]="toDate" placeholder="Available Date To" formControlName="availableDateTo"
+               required>
+        <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+        <mat-datepicker #toDate></mat-datepicker>
+        <mat-error>Available Date To is required</mat-error>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <div mat-dialog-actions fxLayoutAlign="end">
+        <button class="mat-raised-button btn-primary" type="submit">Save</button>
+        <button class="mat-raised-button mat-warn" (click)="close()" type="button" tabindex="-1">Cancel</button>
+      </div>
+      <mat-dialog-content>
+        <div style="text-align: center;color: red; font-size: 20px;">
+          {{errorMessage}}
+        </div>
+      </mat-dialog-content>
+    </div>
+  </form>
+</div>
+
