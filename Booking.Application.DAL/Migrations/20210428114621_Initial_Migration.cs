@@ -23,6 +23,30 @@ namespace Booking.Application.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Persons",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FirstName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    MiddleName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    LastName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Gender = table.Column<string>(type: "character varying(1)", maxLength: 1, nullable: false),
+                    ContactNo = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatedById = table.Column<int>(type: "integer", maxLength: 64, nullable: false),
+                    Updated = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedById = table.Column<int>(type: "integer", maxLength: 64, nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Persons", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ChangeLogs",
                 columns: table => new
                 {
@@ -106,7 +130,7 @@ namespace Booking.Application.DAL.Migrations
                     Username = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Password = table.Column<string>(type: "text", nullable: false),
                     Salt = table.Column<string>(type: "text", nullable: true),
-                    RoleId = table.Column<int>(type: "integer", nullable: false),
+                    Role = table.Column<string>(type: "text", nullable: false),
                     PersonId = table.Column<int>(type: "integer", nullable: false),
                     TutorId = table.Column<int>(type: "integer", nullable: true),
                     StudentId = table.Column<int>(type: "integer", nullable: true),
@@ -119,6 +143,12 @@ namespace Booking.Application.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserLogins", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserLogins_Persons_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "Persons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -178,73 +208,6 @@ namespace Booking.Application.DAL.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_BookingTypes_UserLogins_UpdatedById",
-                        column: x => x.UpdatedById,
-                        principalTable: "UserLogins",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Persons",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    FirstName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    MiddleName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    LastName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    Gender = table.Column<string>(type: "character varying(1)", maxLength: 1, nullable: false),
-                    ContactNo = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
-                    Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatedById = table.Column<int>(type: "integer", maxLength: 64, nullable: false),
-                    Updated = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    UpdatedById = table.Column<int>(type: "integer", maxLength: 64, nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Persons", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Persons_UserLogins_CreatedById",
-                        column: x => x.CreatedById,
-                        principalTable: "UserLogins",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Persons_UserLogins_UpdatedById",
-                        column: x => x.UpdatedById,
-                        principalTable: "UserLogins",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Roles",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatedById = table.Column<int>(type: "integer", maxLength: 64, nullable: false),
-                    Updated = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    UpdatedById = table.Column<int>(type: "integer", maxLength: 64, nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Roles_UserLogins_CreatedById",
-                        column: x => x.CreatedById,
-                        principalTable: "UserLogins",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Roles_UserLogins_UpdatedById",
                         column: x => x.UpdatedById,
                         principalTable: "UserLogins",
                         principalColumn: "Id",
@@ -369,16 +332,6 @@ namespace Booking.Application.DAL.Migrations
                 column: "ChangeEventID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Persons_CreatedById",
-                table: "Persons",
-                column: "CreatedById");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Persons_UpdatedById",
-                table: "Persons",
-                column: "UpdatedById");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Planes_AirportId",
                 table: "Planes",
                 column: "AirportId");
@@ -391,16 +344,6 @@ namespace Booking.Application.DAL.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Planes_UpdatedById",
                 table: "Planes",
-                column: "UpdatedById");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Roles_CreatedById",
-                table: "Roles",
-                column: "CreatedById");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Roles_UpdatedById",
-                table: "Roles",
                 column: "UpdatedById");
 
             migrationBuilder.CreateIndex(
@@ -427,11 +370,6 @@ namespace Booking.Application.DAL.Migrations
                 name: "IX_UserLogins_PersonId",
                 table: "UserLogins",
                 column: "PersonId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserLogins_RoleId",
-                table: "UserLogins",
-                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserLogins_StudentId",
@@ -508,22 +446,6 @@ namespace Booking.Application.DAL.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_UserLogins_Persons_PersonId",
-                table: "UserLogins",
-                column: "PersonId",
-                principalTable: "Persons",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_UserLogins_Roles_RoleId",
-                table: "UserLogins",
-                column: "RoleId",
-                principalTable: "Roles",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
                 name: "FK_UserLogins_Students_StudentId",
                 table: "UserLogins",
                 column: "StudentId",
@@ -542,22 +464,6 @@ namespace Booking.Application.DAL.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Persons_UserLogins_CreatedById",
-                table: "Persons");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Persons_UserLogins_UpdatedById",
-                table: "Persons");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Roles_UserLogins_CreatedById",
-                table: "Roles");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Roles_UserLogins_UpdatedById",
-                table: "Roles");
-
             migrationBuilder.DropForeignKey(
                 name: "FK_Students_UserLogins_CreatedById",
                 table: "Students");
@@ -597,9 +503,6 @@ namespace Booking.Application.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Persons");
-
-            migrationBuilder.DropTable(
-                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Students");
